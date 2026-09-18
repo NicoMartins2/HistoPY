@@ -8,7 +8,7 @@ def get_os():
         if not history_dir.exists():
             Path.mkdir(history_dir, parents=True) # create the directory if it doesn't exist
         return win
-    elif usr_os == 'linux':
+    elif usr_os == 'posix':
         return linux
     else:
         raise Exception("Unsupported operating system: {}".format(usr_os))
