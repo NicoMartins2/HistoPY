@@ -1,28 +1,26 @@
-import os, sys, win, linux
+import os, sys
+from histopyBASEclass import create_histopy_instance
 from pathlib import Path
 
-def get_os():
-    usr_os = os.name
-    if usr_os == 'nt':
-        history_dir = Path.home() / 'AppData' / 'Roaming' / 'Microsoft' / 'Windows' / 'PowerShell' / 'PSReadLine' / 'ConsoleHost_history.txt'
-        if not history_dir.exists():
-            Path.mkdir(history_dir, parents=True) # create the directory if it doesn't exist
-        return win
-    elif usr_os == 'posix':
-        return linux
-    else:
-        raise Exception("Unsupported operating system: {}".format(usr_os))
+histopy = create_histopy_instance()
 
 if __name__ == "__main__":
-    if len(sys.argv) > 2 or len(sys.argv) < 2:
-        raise Exception("Invalid number of arguments provided. Please provide exactly one argument.")
+
+    if len(sys.argv) == 1:
+        print(
+            "Usage: python histopy.py [listall|last|id]\n"
+            "listall: List all commands in the history.\n"
+            "last: Show the last command in the history.\n"
+            "id: List especific command in the history."
+        )
+    elif len(sys.argv) > 3:
+        raise Exception("Invalid number of arguments provided.")
     else:
-        os_module = get_os()
-        if sys.argv[1] == "all":
-            os_module.all()
+        if sys.argv[1] == "listall":
+            histopy.listall()
         elif sys.argv[1] == "last":
-            os_module.last()
+            histopy.last()
         elif sys.argv[1] == "id":
-            os_module.id()
+            histopy.id()
         else:
             raise Exception("Invalid argument provided.")
